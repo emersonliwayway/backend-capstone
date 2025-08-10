@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tag_list;
 DROP TABLE IF EXISTS post_tags;
 DROP TABLE IF EXISTS bookmarks;
 
@@ -10,18 +11,24 @@ CREATE TABLE users (
   password text NOT NULL
 );
 
+CREATE TABLE tags (
+  tag_id serial PRIMARY KEY,
+  tag_name text UNIQUE
+);
+
+CREATE TABLE tag_list (
+  list_id serial PRIMARY KEY,
+  tag_id int REFERENCES tags(tag_id) ON DELETE CASCADE,
+  UNIQUE (list_id, tag_id)
+);
+
 CREATE TABLE posts (
   post_id serial PRIMARY KEY,
   title text NOT NULL,
   body text NOT NULL,
   user_id int NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   created_at timestamp,
-  tag_list int []
-);
-
-CREATE TABLE tags (
-  tag_id serial PRIMARY KEY,
-  tag_name text UNIQUE
+  list_id int UNIQUE REFERENCES tag_list(list_id)
 );
 
 CREATE TABLE post_tags (
