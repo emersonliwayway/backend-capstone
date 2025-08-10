@@ -1,9 +1,9 @@
 import db from "#db/client";
 
-export async function createPost(title, body, user_id, created_at, list_id) {
+export async function createPost(title, body, user_id, created_at, post_tags) {
   const sql = `
     INSERT INTO posts
-      (title, body, user_id, created_at, list_id)
+      (title, body, user_id, created_at, post_tags)
     VALUES
       ($1, $2, $3, $4, $5)
     RETURNING *
@@ -11,7 +11,7 @@ export async function createPost(title, body, user_id, created_at, list_id) {
 
   const {
     rows: [post],
-  } = await db.query(sql, [title, body, user_id, created_at, list_id]);
+  } = await db.query(sql, [title, body, user_id, created_at, post_tags]);
   return post;
 }
 
@@ -25,29 +25,29 @@ export async function getPosts() {
   return posts;
 }
 
-export async function getPostById(post_id) {
+export async function getPostById(id) {
   const sql = `
       SELECT *
       FROM posts
-      WHERE post_id = $1
+      WHERE id = $1
     `;
 
   const {
     rows: [post],
-  } = await db.query(sql, [post_id]);
+  } = await db.query(sql, [id]);
   return post;
 }
 
-export async function deletePost(post_id) {
+export async function deletePost(id) {
   const sql = `
       DELETE FROM posts
-      WHERE post_id = $1
+      WHERE id = $1
       RETURNING *
     `;
 
   const {
     rows: [post],
-  } = await db.query(sql, [post_id]);
+  } = await db.query(sql, [id]);
   return post;
 }
 

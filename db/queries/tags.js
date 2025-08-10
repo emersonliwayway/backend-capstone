@@ -10,10 +10,10 @@ export async function getTags() {
   return tags;
 }
 
-export async function createTag(tag_name) {
+export async function createTag(name) {
   const sql = `
   INSERT INTO tags
-    (tag_name)
+    (name)
   VALUES
     ($1)
   RETURNING *
@@ -21,33 +21,33 @@ export async function createTag(tag_name) {
 
   const {
     rows: [tag],
-  } = await db.query(sql, [tag_name]);
+  } = await db.query(sql, [name]);
   return tag;
 }
 
-export async function deleteTag(tag_id) {
+export async function deleteTag(id) {
   const sql = `
     DELETE FROM tags
-    WHERE tag_id = $1
+    WHERE id = $1
     RETURNING *
     `;
 
   const {
     rows: [tag],
-  } = await db.query(sql, [tag_id]);
+  } = await db.query(sql, [id]);
   return tag;
 }
 
-export async function getTagById(tag_id) {
+export async function getTagById(id) {
   const sql = `
   SELECT *
   FROM tags
-  WHERE tag_id = $1
+  WHERE id = $1
   `;
 
   const {
     rows: [tag],
-  } = await db.query(sql, [tag_id]);
+  } = await db.query(sql, [id]);
   return tag;
 }
 

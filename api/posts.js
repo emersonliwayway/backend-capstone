@@ -22,16 +22,16 @@ router
   .route("/")
   .post(
     requireUser,
-    requireBody(["title", "body", "tag_list"]),
+    requireBody(["title", "body", "post_tags"]),
     async (req, res) => {
-      const { title, body, tag_list } = req.body;
+      const { title, body, post_tags } = req.body;
       const timestamp = new Date();
       const post = await createPost(
         title,
         body,
-        req.user.user_id,
+        req.user.id,
         timestamp,
-        tag_list
+        post_tags
       );
       res.status(201).send(post);
     }
@@ -49,7 +49,7 @@ router.route("/:id").get((req, res) => {
 });
 
 router.route("/:id").delete(requireUser, async (req, res) => {
-  if (req.user.user_id !== req.post.post_id) {
+  if (req.user.id !== req.post.user_id) {
     return res.status(401).send("Post not made by user.");
   }
   await deletePost(req.post.post_id);
@@ -57,6 +57,6 @@ router.route("/:id").delete(requireUser, async (req, res) => {
 });
 
 router.route("/:id/tags").get(async (req, res) => {
-  const post_tags = await getTagsByPostId(req.post.post_id);
+  const post_tags = await getTagsByPostId(req.post.id);
   res.send(post_tags);
 });
