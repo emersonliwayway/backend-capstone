@@ -71,8 +71,3 @@ export async function deleteFromPostTags(id, tag_id) {
   RETURNING *
   `;
 }
-
-// delete 1 tag from array
-// add tags to array
-
-//update post_tags set tag_id=(select array(select unnest(tag_id) EXCEPT select unnest('{3})))

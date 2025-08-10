@@ -53,11 +53,10 @@ export async function getTagById(id) {
 
 export async function getTagsByPostId(post_id) {
   const sql = `
-  SELECT tags.tag_id, tag_name
-  FROM tags
-  JOIN tag_list ON tags.tag_id = tag_list.tag_id
-  JOIN posts ON tag_list.list_id = posts.list_id
-  WHERE posts.post_id = $1
+  SELECT posts.id AS post_id, UNNEST(tag_id) AS tags
+  FROM post_tags
+  JOIN posts on posts.post_tags = post_tags.id
+  WHERE posts.id = $1
   `;
 
   const { rows: tags } = await db.query(sql, [post_id]);

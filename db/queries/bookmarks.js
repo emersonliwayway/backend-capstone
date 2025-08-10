@@ -15,25 +15,24 @@ export async function createBookmark(user_id, post_id) {
   return bookmark;
 }
 
-export async function deleteBookmark(post_id) {
+export async function deleteBookmark(user_id, post_id) {
   const sql = `
-  DELETE FROM bookmarks
-  WHERE post_id = $1
-  RETURNING *
+    DELETE FROM bookmarks
+    WHERE user_id = $1 AND post_id = $2
+    RETURNING *
   `;
 
   const {
     rows: [bookmark],
-  } = await db.query(sql, [post_id]);
+  } = await db.query(sql, [user_id, post_id]);
   return bookmark;
 }
 
 export async function getBookmarksByUserId(user_id) {
   const sql = `
-    SELECT posts.*
-    FROM posts
-    JOIN bookmarks ON bookmarks.post_id = posts.post_id
-    WHERE bookmarks.user_id = $1
+    SELECT *
+    FROM bookmarks
+    WHERE user_id = $1
     `;
 
   const { rows: bookmarks } = await db.query(sql, [user_id]);
