@@ -17,6 +17,7 @@ CREATE TABLE tags (
 
 CREATE TABLE post_tags (
   id serial PRIMARY KEY,
+  user_id int REFERENCES users(id) ON DELETE CASCADE,
   tag_id int []
 );
 

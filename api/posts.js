@@ -8,10 +8,16 @@ import {
   deletePost,
   getPostById,
 } from "#db/queries/posts";
+import { getTagsByPostId } from "#db/queries/tags";
 
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
-import { getTagsByPostId } from "#db/queries/tags";
+import {
+  addTagToPostTags,
+  createPostTags,
+  getPostTags,
+  getPostTagsById,
+} from "#db/queries/post_tags";
 
 router.route("/").get(async (req, res) => {
   const posts = await getPosts();
@@ -52,7 +58,7 @@ router.route("/:id").delete(requireUser, async (req, res) => {
   if (req.user.id !== req.post.user_id) {
     return res.status(401).send("Post not made by user.");
   }
-  await deletePost(req.post.post_id);
+  await deletePost(req.post.id);
   res.sendStatus(204);
 });
 

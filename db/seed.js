@@ -22,7 +22,7 @@ async function seed() {
     const user = await createUser("user" + i, "password" + i);
     for (let j = 1; j < 3; j++) {
       const timestamp = new Date();
-      const tags = await createPostTags([random(), random()]);
+      const tags = await createPostTags(user.id, [random(), random()]);
       await createPost(
         "post title",
         "a great idea",

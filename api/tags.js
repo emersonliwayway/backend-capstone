@@ -13,13 +13,11 @@ router.route("/").get(async (req, res) => {
   res.send(tags);
 });
 
-router
-  .route("/")
-  .post(requireUser, requireBody(["tag_name"]), async (req, res) => {
-    const { tag_name } = req.body;
-    const tag = await createTag(tag_name);
-    res.status(201).send(tag);
-  });
+router.route("/").post(requireUser, requireBody(["name"]), async (req, res) => {
+  const { name } = req.body;
+  const tag = await createTag(name);
+  res.status(201).send(tag);
+});
 
 router.param("id", async (req, res, next, id) => {
   const tag = await getTagById(id);
@@ -33,6 +31,6 @@ router.route("/:id").get((req, res) => {
 });
 
 router.route("/:id/posts").get(async (req, res) => {
-  const posts = await getPostsByTagId(req.tag.tag_id);
+  const posts = await getPostsByTagId(req.tag.id);
   res.status(200).send(posts);
 });
