@@ -7,7 +7,7 @@ export async function createPost(title, body, user_id, created_at, post_tags) {
     VALUES
       ($1, $2, $3, $4, $5)
     RETURNING *
-    `;
+  `;
 
   const {
     rows: [post],
@@ -17,9 +17,9 @@ export async function createPost(title, body, user_id, created_at, post_tags) {
 
 export async function getPosts() {
   const sql = `
-      SELECT *
-      FROM posts
-      `;
+    SELECT *
+    FROM posts
+  `;
 
   const { rows: posts } = await db.query(sql);
   return posts;
@@ -27,10 +27,10 @@ export async function getPosts() {
 
 export async function getPostById(id) {
   const sql = `
-      SELECT *
-      FROM posts
-      WHERE id = $1
-    `;
+    SELECT *
+    FROM posts
+    WHERE id = $1
+  `;
 
   const {
     rows: [post],
@@ -40,10 +40,10 @@ export async function getPostById(id) {
 
 export async function deletePost(id) {
   const sql = `
-      DELETE FROM posts
-      WHERE id = $1
-      RETURNING *
-    `;
+    DELETE FROM posts
+    WHERE id = $1
+    RETURNING *
+  `;
 
   const {
     rows: [post],
@@ -53,10 +53,10 @@ export async function deletePost(id) {
 
 export async function getPostsByUserId(user_id) {
   const sql = `
-      SELECT *
-      FROM posts
-      WHERE user_id = $1
-    `;
+    SELECT *
+    FROM posts
+    WHERE user_id = $1
+  `;
 
   const { rows: posts } = await db.query(sql, [user_id]);
   return posts;
@@ -69,7 +69,7 @@ export async function getPostsByTagId(tag_id) {
       CROSS JOIN unnest(tag_id) AS tags
       JOIN posts ON posts.post_tags = post_tags.id
     WHERE tags = $1
-    `;
+  `;
 
   const { rows: posts } = await db.query(sql, [tag_id]);
   return posts;

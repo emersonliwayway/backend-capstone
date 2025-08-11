@@ -7,7 +7,7 @@ export async function createBookmark(user_id, post_id) {
     VALUES
       ($1, $2)
     RETURNING *
-    `;
+  `;
 
   const {
     rows: [bookmark],
@@ -33,7 +33,7 @@ export async function getBookmarksByUserId(user_id) {
     SELECT *
     FROM bookmarks
     WHERE user_id = $1
-    `;
+  `;
 
   const { rows: bookmarks } = await db.query(sql, [user_id]);
   return bookmarks;
