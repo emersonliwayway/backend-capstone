@@ -12,12 +12,6 @@ import { getTagsByPostId } from "#db/queries/tags";
 
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
-import {
-  addTagToPostTags,
-  createPostTags,
-  getPostTags,
-  getPostTagsById,
-} from "#db/queries/post_tags";
 
 router.route("/").get(async (req, res) => {
   const posts = await getPosts();
@@ -42,6 +36,12 @@ router
       res.status(201).send(post);
     }
   );
+
+router.route("/random").get(async (req, res) => {
+  const posts = await getPosts();
+  const randomIndex = Math.floor(Math.random() * posts.length);
+  res.send(posts[randomIndex]);
+});
 
 router.param("id", async (req, res, next, id) => {
   const post = await getPostById(id);
