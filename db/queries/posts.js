@@ -64,11 +64,11 @@ export async function getPostsByUserId(user_id) {
 
 export async function getPostsByTagId(tag_id) {
   const sql = `
-    SELECT posts.*, post_tags.tag_id 
-    FROM post_tags
-      CROSS JOIN unnest(tag_id) AS tags
-      JOIN posts ON posts.post_tags = post_tags.id
-    WHERE tags = $1
+    SELECT posts.*
+    FROM posts
+      CROSS JOIN unnest(post_tags) AS tag_id
+      JOIN tags ON tags.id = tag_id
+    WHERE tag_id = $1
   `;
 
   const { rows: posts } = await db.query(sql, [tag_id]);

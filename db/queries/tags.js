@@ -51,19 +51,15 @@ export async function getTagById(id) {
   return tag;
 }
 
-export async function getTagsByPostId(post_id) {
+export async function getTagsByPostId(id) {
   const sql = `
-    SELECT tags.id AS tag_id, tags.name
-    FROM post_tags
-      CROSS JOIN unnest(tag_id) AS tag
-      JOIN tags ON tag = tags.id
-      JOIN posts ON posts.post_tags = post_tags.id
-    WHERE posts.id = $1;
+    SELECT tags.id, tags.name
+    FROM posts
+      CROSS JOIN unnest(post_tags) AS tag
+      JOIN tags ON tags.id = tag
+    WHERE posts.id = $1
   `;
 
-  const { rows: tags } = await db.query(sql, [post_id]);
+  const { rows: tags } = await db.query(sql, [id]);
   return tags;
 }
-
-// select tags.name, tag_id from post_tags cross join unnest(tag_id) as tag join tags on tags.id = tag;
-// select tags.name, unnest(tag_id) from post_tags join tags on tag_name = post_tags.tag_id

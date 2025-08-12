@@ -5,7 +5,6 @@ export default app;
 import usersRouter from "#api/users";
 import postsRouter from "#api/posts";
 import tagsRouter from "#api/tags";
-import postTagsRouter from "#api/post_tags";
 import bookmarksRouter from "#api/bookmarks";
 
 import getUserFromToken from "#middleware/getUserFromToken";
@@ -27,7 +26,6 @@ app.get("/", (req, res) => res.send("Hello, World!"));
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/tags", tagsRouter);
-app.use("/posttags", postTagsRouter);
 app.use("/bookmarks", bookmarksRouter);
 
 app.use(handlePostgresErrors);

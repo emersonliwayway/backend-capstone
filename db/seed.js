@@ -2,7 +2,7 @@ import db from "#db/client";
 import { createUser } from "#db/queries/users";
 import { createPost } from "#db/queries/posts";
 import { createTag } from "#db/queries/tags";
-import { createPostTags, addTagToPostTags } from "#db/queries/post_tags";
+import { createBookmark } from "#db/queries/bookmarks";
 
 await db.connect();
 await seed();
@@ -22,14 +22,14 @@ async function seed() {
     const user = await createUser("user" + i, "password" + i);
     for (let j = 1; j < 3; j++) {
       const timestamp = new Date();
-      const tags = await createPostTags(user.id, [random(), random()]);
-      await createPost(
-        "post title",
-        "a great idea",
-        user.id,
-        timestamp,
-        tags.id
-      );
+      const array = [random(), random(), random()];
+      const tags = [...new Set(array)];
+      await createPost("post title", "a great idea", user.id, timestamp, tags);
     }
+  }
+
+  for (let i = 1; i < 6; i++) {
+    const post_id = random();
+    await createBookmark(i, post_id);
   }
 }
