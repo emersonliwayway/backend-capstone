@@ -6,6 +6,7 @@ import { createUser, getUserByUsernameAndPassword } from "#db/queries/users";
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
 import getUserFromToken from "#middleware/getUserFromToken";
+import { getPostsByUserId } from "#db/queries/posts";
 
 router
   .route("/register")
@@ -30,4 +31,10 @@ router
 
 router.route("/me").get(getUserFromToken, async (req, res) => {
   res.send(req.user);
+});
+
+router.route("/posts").get(getUserFromToken, async (req, res) => {
+  const posts = await getPostsByUserId(req.user.id);
+  if (!posts) return res.status(404).send("No posts found.");
+  res.send(posts);
 });

@@ -31,7 +31,8 @@ CREATE TABLE posts (
 );
 
 CREATE TABLE bookmarks (
+  id SERIAL PRIMARY KEY,
   user_id int REFERENCES users(id) ON DELETE CASCADE,
   post_id int REFERENCES posts(id) ON DELETE CASCADE,
-  PRIMARY KEY (user_id, post_id)
+  UNIQUE (user_id, post_id)
 );

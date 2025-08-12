@@ -15,20 +15,7 @@ export async function createBookmark(user_id, post_id) {
   return bookmark;
 }
 
-export async function deleteBookmark(user_id, post_id) {
-  const sql = `
-    DELETE FROM bookmarks
-    WHERE user_id = $1 AND post_id = $2
-    RETURNING *
-  `;
-
-  const {
-    rows: [bookmark],
-  } = await db.query(sql, [user_id, post_id]);
-  return bookmark;
-}
-
-export async function getBookmarksByUserId(user_id) {
+export async function getBookmarks(user_id) {
   const sql = `
     SELECT *
     FROM bookmarks
@@ -37,4 +24,30 @@ export async function getBookmarksByUserId(user_id) {
 
   const { rows: bookmarks } = await db.query(sql, [user_id]);
   return bookmarks;
+}
+
+export async function getBookmarkById(id) {
+  const sql = `
+    SELECT *
+    FROM bookmarks
+    WHERE id = $1
+  `;
+
+  const {
+    rows: [bookmark],
+  } = await db.query(sql, [id]);
+  return bookmark;
+}
+
+export async function deleteBookmark(id) {
+  const sql = `
+    DELETE FROM bookmarks
+    WHERE id = $1
+    RETURNING *
+  `;
+
+  const {
+    rows: [bookmark],
+  } = await db.query(sql, [id]);
+  return bookmark;
 }
