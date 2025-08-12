@@ -22,10 +22,9 @@ router
   .route("/")
   .post(
     requireUser,
-    requireBody(["title", "body", "post_tags"]),
+    requireBody(["title", "body", "timestamp", "post_tags"]),
     async (req, res) => {
-      const { title, body, post_tags } = req.body;
-      const timestamp = new Date();
+      const { title, body, timestamp, post_tags } = req.body;
       const post = await createPost(
         title,
         body,
