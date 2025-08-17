@@ -35,6 +35,5 @@ router.route("/me").get(getUserFromToken, async (req, res) => {
 
 router.route("/posts").get(getUserFromToken, async (req, res) => {
   const posts = await getPostsByUserId(req.user.id);
-  if (!posts) return res.status(404).send("No posts found.");
   res.send(posts);
 });

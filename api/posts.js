@@ -54,9 +54,6 @@ router.route("/:id").get((req, res) => {
 });
 
 router.route("/:id").delete(requireUser, async (req, res) => {
-  if (req.user.id !== req.post.user_id) {
-    return res.status(401).send("Post not made by user.");
-  }
   await deletePost(req.post.id);
   res.sendStatus(204);
 });
