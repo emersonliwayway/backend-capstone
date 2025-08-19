@@ -18,11 +18,21 @@ export async function createTag(name) {
       ($1)
     RETURNING *
   `;
-
-  const {
-    rows: [tag],
-  } = await db.query(sql, [name]);
-  return tag;
+  if (Array.isArray(name)) {
+    const allTags = [];
+    for (const tags of name) {
+      const {
+        rows: [tag],
+      } = await db.query(sql, [tags]);
+      allTags.push(tag);
+    }
+    return allTags;
+  } else {
+    const {
+      rows: [tag],
+    } = await db.query(sql, [name]);
+    return tag;
+  }
 }
 
 export async function deleteTag(id) {

@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+router.use(express.json());
 export default router;
 
 import { getPostsByTagId } from "#db/queries/posts";
@@ -16,7 +17,8 @@ router.route("/").get(async (req, res) => {
 router.route("/").post(requireUser, requireBody(["name"]), async (req, res) => {
   const { name } = req.body;
   const tag = await createTag(name);
-  res.status(201).send(tag);
+  console.log(tag);
+  res.status(201).json(tag);
 });
 
 router.param("id", async (req, res, next, id) => {
